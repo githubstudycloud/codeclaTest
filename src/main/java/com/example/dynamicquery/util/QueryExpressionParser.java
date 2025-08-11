@@ -17,17 +17,17 @@ import java.util.regex.Pattern;
 @Component
 public class QueryExpressionParser {
     
-    // 单值表达式：字段名 操作符 值
-    private static final String SINGLE_VALUE_PATTERN = "^([\\w\\u4e00-\\u9fa5]+)\\s*(>=|<=|!=|>|<|=)\\s*([\\w\\u4e00-\\u9fa5.-]+)$";
+    // 单值表达式：字段名 操作符 值 或 操作符 值 (默认field)
+    private static final String SINGLE_VALUE_PATTERN = "^(?:([\\w\\u4e00-\\u9fa5]+)\\s*)?(>=|<=|!=|>|<|=)\\s*([\\w\\u4e00-\\u9fa5.-]+)$";
     
-    // 区间表达式：字段名 >= 值1 且 <= 值2 (四种组合)
-    private static final String RANGE_CLOSED_PATTERN = "^([\\w\\u4e00-\\u9fa5]+)\\s*>=\\s*([\\w\\u4e00-\\u9fa5.-]+)\\s*且\\s*<=\\s*([\\w\\u4e00-\\u9fa5.-]+)$";
-    private static final String RANGE_LEFT_OPEN_PATTERN = "^([\\w\\u4e00-\\u9fa5]+)\\s*>\\s*([\\w\\u4e00-\\u9fa5.-]+)\\s*且\\s*<=\\s*([\\w\\u4e00-\\u9fa5.-]+)$";
-    private static final String RANGE_RIGHT_OPEN_PATTERN = "^([\\w\\u4e00-\\u9fa5]+)\\s*>=\\s*([\\w\\u4e00-\\u9fa5.-]+)\\s*且\\s*<\\s*([\\w\\u4e00-\\u9fa5.-]+)$";
-    private static final String RANGE_OPEN_PATTERN = "^([\\w\\u4e00-\\u9fa5]+)\\s*>\\s*([\\w\\u4e00-\\u9fa5.-]+)\\s*且\\s*<\\s*([\\w\\u4e00-\\u9fa5.-]+)$";
+    // 区间表达式：值1 操作符1 字段名 操作符2 值2 (四种组合)
+    private static final String RANGE_CLOSED_PATTERN = "^([\\w\\u4e00-\\u9fa5.-]+)\\s*<=\\s*([\\w\\u4e00-\\u9fa5]+)\\s*<=\\s*([\\w\\u4e00-\\u9fa5.-]+)$";
+    private static final String RANGE_LEFT_OPEN_PATTERN = "^([\\w\\u4e00-\\u9fa5.-]+)\\s*<\\s*([\\w\\u4e00-\\u9fa5]+)\\s*<=\\s*([\\w\\u4e00-\\u9fa5.-]+)$";
+    private static final String RANGE_RIGHT_OPEN_PATTERN = "^([\\w\\u4e00-\\u9fa5.-]+)\\s*<=\\s*([\\w\\u4e00-\\u9fa5]+)\\s*<\\s*([\\w\\u4e00-\\u9fa5.-]+)$";
+    private static final String RANGE_OPEN_PATTERN = "^([\\w\\u4e00-\\u9fa5.-]+)\\s*<\\s*([\\w\\u4e00-\\u9fa5]+)\\s*<\\s*([\\w\\u4e00-\\u9fa5.-]+)$";
     
-    // 空值表达式：字段名 NA
-    private static final String NA_PATTERN = "^([\\w\\u4e00-\\u9fa5]+)\\s*(NA)$";
+    // 空值表达式：字段名 NA 或 NA (默认field)
+    private static final String NA_PATTERN = "^(?:([\\w\\u4e00-\\u9fa5]+)\\s+)?(NA)$";
     
     private final Pattern singleValuePattern = Pattern.compile(SINGLE_VALUE_PATTERN);
     private final Pattern rangeClosedPattern = Pattern.compile(RANGE_CLOSED_PATTERN);
@@ -53,51 +53,51 @@ public class QueryExpressionParser {
         // 空值表达式
         Matcher naMatcher = naPattern.matcher(expression);
         if (naMatcher.matches()) {
-            result.setFieldName(naMatcher.group(1));
+            result.setFieldName(naMatcher.group(1) != null ? naMatcher.group(1) : "field");
             result.setOperator(FilterOperator.NA);
             result.setValid(true);
             return result;
         }
         
-        // 闭区间表达式
+        // 闭区间表达式：值1 <= 字段名 <= 值2
         Matcher rangeClosedMatcher = rangeClosedPattern.matcher(expression);
         if (rangeClosedMatcher.matches()) {
-            result.setFieldName(rangeClosedMatcher.group(1));
+            result.setFieldName(rangeClosedMatcher.group(2));
             result.setOperator(FilterOperator.RANGE_CLOSED);
-            result.setValue1(rangeClosedMatcher.group(2));
+            result.setValue1(rangeClosedMatcher.group(1));
             result.setValue2(rangeClosedMatcher.group(3));
             result.setValid(true);
             return result;
         }
         
-        // 左开右闭区间表达式
+        // 左开右闭区间表达式：值1 < 字段名 <= 值2
         Matcher rangeLeftOpenMatcher = rangeLeftOpenPattern.matcher(expression);
         if (rangeLeftOpenMatcher.matches()) {
-            result.setFieldName(rangeLeftOpenMatcher.group(1));
+            result.setFieldName(rangeLeftOpenMatcher.group(2));
             result.setOperator(FilterOperator.RANGE_LEFT_OPEN);
-            result.setValue1(rangeLeftOpenMatcher.group(2));
+            result.setValue1(rangeLeftOpenMatcher.group(1));
             result.setValue2(rangeLeftOpenMatcher.group(3));
             result.setValid(true);
             return result;
         }
         
-        // 左闭右开区间表达式
+        // 左闭右开区间表达式：值1 <= 字段名 < 值2
         Matcher rangeRightOpenMatcher = rangeRightOpenPattern.matcher(expression);
         if (rangeRightOpenMatcher.matches()) {
-            result.setFieldName(rangeRightOpenMatcher.group(1));
+            result.setFieldName(rangeRightOpenMatcher.group(2));
             result.setOperator(FilterOperator.RANGE_RIGHT_OPEN);
-            result.setValue1(rangeRightOpenMatcher.group(2));
+            result.setValue1(rangeRightOpenMatcher.group(1));
             result.setValue2(rangeRightOpenMatcher.group(3));
             result.setValid(true);
             return result;
         }
         
-        // 开区间表达式
+        // 开区间表达式：值1 < 字段名 < 值2
         Matcher rangeOpenMatcher = rangeOpenPattern.matcher(expression);
         if (rangeOpenMatcher.matches()) {
-            result.setFieldName(rangeOpenMatcher.group(1));
+            result.setFieldName(rangeOpenMatcher.group(2));
             result.setOperator(FilterOperator.RANGE_OPEN);
-            result.setValue1(rangeOpenMatcher.group(2));
+            result.setValue1(rangeOpenMatcher.group(1));
             result.setValue2(rangeOpenMatcher.group(3));
             result.setValid(true);
             return result;
@@ -107,7 +107,7 @@ public class QueryExpressionParser {
         Matcher singleMatcher = singleValuePattern.matcher(expression);
         if (singleMatcher.matches()) {
             try {
-                result.setFieldName(singleMatcher.group(1));
+                result.setFieldName(singleMatcher.group(1) != null ? singleMatcher.group(1) : "field");
                 result.setOperator(FilterOperator.fromString(singleMatcher.group(2)));
                 result.setValue1(singleMatcher.group(3));
                 result.setValid(true);
@@ -146,14 +146,16 @@ public class QueryExpressionParser {
     public List<String> getValidExpressionExamples() {
         List<String> examples = new ArrayList<>();
         examples.add("age > 18 - 年龄大于18");
+        examples.add("> 18 - 默认字段大于18");
         examples.add("name = 张三 - 姓名等于张三");
         examples.add("score >= 90 - 分数大于等于90");
         examples.add("status != active - 状态不等于active");
-        examples.add("salary >= 5000 且 <= 10000 - 工资在5000到10000之间（闭区间）");
-        examples.add("age > 18 且 <= 65 - 年龄在18到65之间（左开右闭）");
-        examples.add("score >= 60 且 < 100 - 分数在60到100之间（左闭右开）");
-        examples.add("experience > 1 且 < 5 - 经验在1到5之间（开区间）");
+        examples.add("5000 <= salary <= 10000 - 工资在5000到10000之间（闭区间）");
+        examples.add("18 < age <= 65 - 年龄在18到65之间（左开右闭）");
+        examples.add("60 <= score < 100 - 分数在60到100之间（左闭右开）");
+        examples.add("1 < experience < 5 - 经验在1到5之间（开区间）");
         examples.add("phone NA - 手机号为空或null");
+        examples.add("NA - 默认字段为空");
         return examples;
     }
     

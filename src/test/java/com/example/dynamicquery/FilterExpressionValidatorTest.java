@@ -39,28 +39,37 @@ class QueryExpressionParserTest {
 
     @Test
     void testValidRangeExpressions() {
-        // 测试闭区间
-        FilterExpression result = parser.parseExpression("age >= 18 且 <= 65");
+        // 测试闭区间：值1 <= 字段名 <= 值2
+        FilterExpression result = parser.parseExpression("18 <= age <= 65");
         assertTrue(result.isValid());
         assertEquals("age", result.getFieldName());
         assertEquals(FilterOperator.RANGE_CLOSED, result.getOperator());
         assertEquals("18", result.getValue1());
         assertEquals("65", result.getValue2());
 
-        // 测试左开右闭
-        result = parser.parseExpression("salary > 5000 且 <= 10000");
+        // 测试左开右闭：值1 < 字段名 <= 值2
+        result = parser.parseExpression("5000 < salary <= 10000");
         assertTrue(result.isValid());
+        assertEquals("salary", result.getFieldName());
         assertEquals(FilterOperator.RANGE_LEFT_OPEN, result.getOperator());
+        assertEquals("5000", result.getValue1());
+        assertEquals("10000", result.getValue2());
 
-        // 测试左闭右开
-        result = parser.parseExpression("score >= 60 且 < 100");
+        // 测试左闭右开：值1 <= 字段名 < 值2
+        result = parser.parseExpression("60 <= score < 100");
         assertTrue(result.isValid());
+        assertEquals("score", result.getFieldName());
         assertEquals(FilterOperator.RANGE_RIGHT_OPEN, result.getOperator());
+        assertEquals("60", result.getValue1());
+        assertEquals("100", result.getValue2());
 
-        // 测试开区间
-        result = parser.parseExpression("experience > 1 且 < 5");
+        // 测试开区间：值1 < 字段名 < 值2
+        result = parser.parseExpression("1 < experience < 5");
         assertTrue(result.isValid());
+        assertEquals("experience", result.getFieldName());
         assertEquals(FilterOperator.RANGE_OPEN, result.getOperator());
+        assertEquals("1", result.getValue1());
+        assertEquals("5", result.getValue2());
     }
 
     @Test
@@ -90,7 +99,7 @@ class QueryExpressionParserTest {
     void testValidateExpression() {
         assertTrue(parser.validateExpression("age > 18"));
         assertTrue(parser.validateExpression("name = 张三"));
-        assertTrue(parser.validateExpression("salary >= 5000 且 <= 10000"));
+        assertTrue(parser.validateExpression("5000 <= salary <= 10000"));
         assertTrue(parser.validateExpression("phone NA"));
         
         assertFalse(parser.validateExpression(""));
@@ -101,6 +110,27 @@ class QueryExpressionParserTest {
     void testGetExamples() {
         var examples = parser.getValidExpressionExamples();
         assertFalse(examples.isEmpty());
-        assertTrue(examples.stream().anyMatch(e -> e.contains("且")));
+        assertTrue(examples.stream().anyMatch(e -> e.contains("<=")));
+    }
+
+    @Test
+    void testDefaultFieldExpressions() {
+        // 测试默认字段（无字段名指定）
+        FilterExpression result = parser.parseExpression("> 18");
+        assertTrue(result.isValid());
+        assertEquals("field", result.getFieldName());
+        assertEquals(FilterOperator.GT, result.getOperator());
+        assertEquals("18", result.getValue1());
+
+        result = parser.parseExpression("= active");
+        assertTrue(result.isValid());
+        assertEquals("field", result.getFieldName());
+        assertEquals(FilterOperator.EQ, result.getOperator());
+        assertEquals("active", result.getValue1());
+
+        result = parser.parseExpression("NA");
+        assertTrue(result.isValid());
+        assertEquals("field", result.getFieldName());
+        assertEquals(FilterOperator.NA, result.getOperator());
     }
 }
