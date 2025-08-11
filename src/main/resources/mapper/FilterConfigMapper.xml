@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dynamicquery.mapper.FilterConfigMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.dynamicquery.entity.FilterConfig">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="field_name" jdbcType="VARCHAR" property="fieldName"/>
+        <result column="field_alias" jdbcType="VARCHAR" property="fieldAlias"/>
+        <result column="field_chinese_name" jdbcType="VARCHAR" property="fieldChineseName"/>
+        <result column="filter_expression" jdbcType="LONGVARCHAR" property="filterExpression"/>
+        <result column="field_type" jdbcType="VARCHAR" property="fieldType"/>
+        <result column="description" jdbcType="LONGVARCHAR" property="description"/>
+        <result column="is_active" jdbcType="BIT" property="isActive"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, field_name, field_alias, field_chinese_name, filter_expression, field_type, 
+        description, is_active, created_time, updated_time
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO filter_config
+        (field_name, field_alias, field_chinese_name, filter_expression, field_type, 
+         description, is_active, created_time, updated_time)
+        VALUES
+        (#{fieldName}, #{fieldAlias}, #{fieldChineseName}, #{filterExpression}, #{fieldType}, 
+         #{description}, #{isActive}, #{createdTime}, #{updatedTime})
+    </insert>
+
+    <update id="updateById">
+        UPDATE filter_config
+        SET field_name = #{fieldName},
+            field_alias = #{fieldAlias},
+            field_chinese_name = #{fieldChineseName},
+            filter_expression = #{filterExpression},
+            field_type = #{fieldType},
+            description = #{description},
+            is_active = #{isActive},
+            updated_time = #{updatedTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM filter_config WHERE id = #{id}
+    </delete>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM filter_config
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM filter_config
+        ORDER BY created_time DESC
+    </select>
+
+    <select id="selectActiveConfigs" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM filter_config
+        WHERE is_active = 1
+        ORDER BY created_time DESC
+    </select>
+
+    <select id="selectByFieldName" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM filter_config
+        WHERE field_name = #{fieldName}
+        AND is_active = 1
+        LIMIT 1
+    </select>
+
+    <select id="selectByFieldNames" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM filter_config
+        WHERE field_name IN
+        <foreach collection="fieldNames" item="fieldName" open="(" separator="," close=")">
+            #{fieldName}
+        </foreach>
+        AND is_active = 1
+    </select>
+
+</mapper>

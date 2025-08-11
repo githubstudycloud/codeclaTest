@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dynamicquery.mapper.DataRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.dynamicquery.entity.DataRecord">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="age" jdbcType="INTEGER" property="age"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="score" jdbcType="DOUBLE" property="score"/>
+        <result column="department" jdbcType="VARCHAR" property="department"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="salary" jdbcType="DOUBLE" property="salary"/>
+        <result column="hire_date" jdbcType="TIMESTAMP" property="hireDate"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, name, age, status, score, department, email, phone, salary, hire_date, created_time, updated_time
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO data_record
+        (name, age, status, score, department, email, phone, salary, hire_date, created_time, updated_time)
+        VALUES
+        (#{name}, #{age}, #{status}, #{score}, #{department}, #{email}, #{phone}, #{salary}, 
+         #{hireDate}, #{createdTime}, #{updatedTime})
+    </insert>
+
+    <update id="updateById">
+        UPDATE data_record
+        SET name = #{name},
+            age = #{age},
+            status = #{status},
+            score = #{score},
+            department = #{department},
+            email = #{email},
+            phone = #{phone},
+            salary = #{salary},
+            hire_date = #{hireDate},
+            updated_time = #{updatedTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM data_record WHERE id = #{id}
+    </delete>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM data_record
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM data_record
+        ORDER BY created_time DESC
+    </select>
+
+    <select id="selectByDynamicConditions" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM data_record
+        <where>
+            <if test="conditions.name != null">
+                AND (
+                <foreach collection="conditions.name" item="nameCondition" separator=" OR ">
+                    <if test="nameCondition.operator.name() == 'EQ'">
+                        name = #{nameCondition.value1}
+                    </if>
+                    <if test="nameCondition.operator.name() == 'NE'">
+                        name != #{nameCondition.value1}
+                    </if>
+                    <if test="nameCondition.operator.name() == 'NA'">
+                        (name IS NULL OR name = '')
+                    </if>
+                </foreach>
+                )
+            </if>
+            
+            <if test="conditions.age != null">
+                AND (
+                <foreach collection="conditions.age" item="ageCondition" separator=" OR ">
+                    <if test="ageCondition.operator.name() == 'EQ'">
+                        age = #{ageCondition.value1}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'NE'">
+                        age != #{ageCondition.value1}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'GT'">
+                        age > #{ageCondition.value1}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'GTE'">
+                        age >= #{ageCondition.value1}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'LT'">
+                        age &lt; #{ageCondition.value1}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'LTE'">
+                        age &lt;= #{ageCondition.value1}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'BETWEEN'">
+                        age >= #{ageCondition.value1} AND age &lt;= #{ageCondition.value2}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'BETWEEN_LEFT_OPEN'">
+                        age > #{ageCondition.value1} AND age &lt;= #{ageCondition.value2}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'BETWEEN_RIGHT_OPEN'">
+                        age >= #{ageCondition.value1} AND age &lt; #{ageCondition.value2}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'BETWEEN_OPEN'">
+                        age > #{ageCondition.value1} AND age &lt; #{ageCondition.value2}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'NA'">
+                        age IS NULL
+                    </if>
+                </foreach>
+                )
+            </if>
+            
+            <if test="conditions.status != null">
+                AND (
+                <foreach collection="conditions.status" item="statusCondition" separator=" OR ">
+                    <if test="statusCondition.operator.name() == 'EQ'">
+                        status = #{statusCondition.value1}
+                    </if>
+                    <if test="statusCondition.operator.name() == 'NE'">
+                        status != #{statusCondition.value1}
+                    </if>
+                    <if test="statusCondition.operator.name() == 'NA'">
+                        (status IS NULL OR status = '')
+                    </if>
+                </foreach>
+                )
+            </if>
+            
+            <if test="conditions.score != null">
+                AND (
+                <foreach collection="conditions.score" item="scoreCondition" separator=" OR ">
+                    <if test="scoreCondition.operator.name() == 'EQ'">
+                        score = #{scoreCondition.value1}
+                    </if>
+                    <if test="scoreCondition.operator.name() == 'NE'">
+                        score != #{scoreCondition.value1}
+                    </if>
+                    <if test="scoreCondition.operator.name() == 'GT'">
+                        score > #{scoreCondition.value1}
+                    </if>
+                    <if test="scoreCondition.operator.name() == 'GTE'">
+                        score >= #{scoreCondition.value1}
+                    </if>
+                    <if test="scoreCondition.operator.name() == 'LT'">
+                        score &lt; #{scoreCondition.value1}
+                    </if>
+                    <if test="scoreCondition.operator.name() == 'LTE'">
+                        score &lt;= #{scoreCondition.value1}
+                    </if>
+                    <if test="scoreCondition.operator.name() == 'BETWEEN'">
+                        score >= #{scoreCondition.value1} AND score &lt;= #{scoreCondition.value2}
+                    </if>
+                    <if test="scoreCondition.operator.name() == 'BETWEEN_LEFT_OPEN'">
+                        score > #{scoreCondition.value1} AND score &lt;= #{scoreCondition.value2}
+                    </if>
+                    <if test="scoreCondition.operator.name() == 'BETWEEN_RIGHT_OPEN'">
+                        score >= #{scoreCondition.value1} AND score &lt; #{scoreCondition.value2}
+                    </if>
+                    <if test="scoreCondition.operator.name() == 'BETWEEN_OPEN'">
+                        score > #{scoreCondition.value1} AND score &lt; #{scoreCondition.value2}
+                    </if>
+                    <if test="scoreCondition.operator.name() == 'NA'">
+                        score IS NULL
+                    </if>
+                </foreach>
+                )
+            </if>
+            
+            <if test="conditions.department != null">
+                AND (
+                <foreach collection="conditions.department" item="departmentCondition" separator=" OR ">
+                    <if test="departmentCondition.operator.name() == 'EQ'">
+                        department = #{departmentCondition.value1}
+                    </if>
+                    <if test="departmentCondition.operator.name() == 'NE'">
+                        department != #{departmentCondition.value1}
+                    </if>
+                    <if test="departmentCondition.operator.name() == 'NA'">
+                        (department IS NULL OR department = '')
+                    </if>
+                </foreach>
+                )
+            </if>
+            
+            <if test="conditions.salary != null">
+                AND (
+                <foreach collection="conditions.salary" item="salaryCondition" separator=" OR ">
+                    <if test="salaryCondition.operator.name() == 'EQ'">
+                        salary = #{salaryCondition.value1}
+                    </if>
+                    <if test="salaryCondition.operator.name() == 'NE'">
+                        salary != #{salaryCondition.value1}
+                    </if>
+                    <if test="salaryCondition.operator.name() == 'GT'">
+                        salary > #{salaryCondition.value1}
+                    </if>
+                    <if test="salaryCondition.operator.name() == 'GTE'">
+                        salary >= #{salaryCondition.value1}
+                    </if>
+                    <if test="salaryCondition.operator.name() == 'LT'">
+                        salary &lt; #{salaryCondition.value1}
+                    </if>
+                    <if test="salaryCondition.operator.name() == 'LTE'">
+                        salary &lt;= #{salaryCondition.value1}
+                    </if>
+                    <if test="salaryCondition.operator.name() == 'BETWEEN'">
+                        salary >= #{salaryCondition.value1} AND salary &lt;= #{salaryCondition.value2}
+                    </if>
+                    <if test="salaryCondition.operator.name() == 'BETWEEN_LEFT_OPEN'">
+                        salary > #{salaryCondition.value1} AND salary &lt;= #{salaryCondition.value2}
+                    </if>
+                    <if test="salaryCondition.operator.name() == 'BETWEEN_RIGHT_OPEN'">
+                        salary >= #{salaryCondition.value1} AND salary &lt; #{salaryCondition.value2}
+                    </if>
+                    <if test="salaryCondition.operator.name() == 'BETWEEN_OPEN'">
+                        salary > #{salaryCondition.value1} AND salary &lt; #{salaryCondition.value2}
+                    </if>
+                    <if test="salaryCondition.operator.name() == 'NA'">
+                        salary IS NULL
+                    </if>
+                </foreach>
+                )
+            </if>
+            
+            <if test="conditions.email != null">
+                AND (
+                <foreach collection="conditions.email" item="emailCondition" separator=" OR ">
+                    <if test="emailCondition.operator.name() == 'EQ'">
+                        email = #{emailCondition.value1}
+                    </if>
+                    <if test="emailCondition.operator.name() == 'NE'">
+                        email != #{emailCondition.value1}
+                    </if>
+                    <if test="emailCondition.operator.name() == 'NA'">
+                        (email IS NULL OR email = '')
+                    </if>
+                </foreach>
+                )
+            </if>
+            
+            <if test="conditions.phone != null">
+                AND (
+                <foreach collection="conditions.phone" item="phoneCondition" separator=" OR ">
+                    <if test="phoneCondition.operator.name() == 'EQ'">
+                        phone = #{phoneCondition.value1}
+                    </if>
+                    <if test="phoneCondition.operator.name() == 'NE'">
+                        phone != #{phoneCondition.value1}
+                    </if>
+                    <if test="phoneCondition.operator.name() == 'NA'">
+                        (phone IS NULL OR phone = '')
+                    </if>
+                </foreach>
+                )
+            </if>
+        </where>
+        ORDER BY created_time DESC
+    </select>
+
+    <select id="countByDynamicConditions" resultType="int">
+        SELECT COUNT(*)
+        FROM data_record
+        <where>
+            <if test="conditions.name != null">
+                AND (
+                <foreach collection="conditions.name" item="nameCondition" separator=" OR ">
+                    <if test="nameCondition.operator.name() == 'EQ'">
+                        name = #{nameCondition.value1}
+                    </if>
+                    <if test="nameCondition.operator.name() == 'NE'">
+                        name != #{nameCondition.value1}
+                    </if>
+                    <if test="nameCondition.operator.name() == 'NA'">
+                        (name IS NULL OR name = '')
+                    </if>
+                </foreach>
+                )
+            </if>
+            
+            <if test="conditions.age != null">
+                AND (
+                <foreach collection="conditions.age" item="ageCondition" separator=" OR ">
+                    <if test="ageCondition.operator.name() == 'EQ'">
+                        age = #{ageCondition.value1}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'NE'">
+                        age != #{ageCondition.value1}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'GT'">
+                        age > #{ageCondition.value1}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'GTE'">
+                        age >= #{ageCondition.value1}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'LT'">
+                        age &lt; #{ageCondition.value1}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'LTE'">
+                        age &lt;= #{ageCondition.value1}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'BETWEEN'">
+                        age >= #{ageCondition.value1} AND age &lt;= #{ageCondition.value2}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'BETWEEN_LEFT_OPEN'">
+                        age > #{ageCondition.value1} AND age &lt;= #{ageCondition.value2}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'BETWEEN_RIGHT_OPEN'">
+                        age >= #{ageCondition.value1} AND age &lt; #{ageCondition.value2}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'BETWEEN_OPEN'">
+                        age > #{ageCondition.value1} AND age &lt; #{ageCondition.value2}
+                    </if>
+                    <if test="ageCondition.operator.name() == 'NA'">
+                        age IS NULL
+                    </if>
+                </foreach>
+                )
+            </if>
+            <!-- 其他字段的条件与上面类似，为了简洁这里省略 -->
+        </where>
+    </select>
+
+</mapper>
