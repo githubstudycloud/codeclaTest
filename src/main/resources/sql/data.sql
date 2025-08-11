@@ -7,7 +7,7 @@ INSERT INTO filter_config (field_name, field_alias, field_chinese_name, filter_e
 ('status', 'userStatus', '状态', 'status = active', 'STRING', '按状态查询的配置'),
 ('score', 'userScore', '分数', 'score >= 60', 'DOUBLE', '按分数查询的配置'),
 ('department', 'dept', '部门', 'department = IT', 'STRING', '按部门查询的配置'),
-('salary', 'sal', '薪资', 'salary BETWEEN 5000,10000', 'DOUBLE', '按薪资范围查询的配置'),
+('salary', 'sal', '薪资', 'salary >= 5000 且 <= 10000', 'DOUBLE', '按薪资范围查询的配置（闭区间）'),
 ('email', 'mail', '邮箱', 'email NA', 'STRING', '查询邮箱为空的配置'),
 ('phone', 'mobile', '手机', 'phone != 空', 'STRING', '查询手机不为空的配置');
 
@@ -26,8 +26,8 @@ INSERT INTO data_record (name, age, status, score, department, email, phone, sal
 
 -- 添加更多配置示例，展示各种操作符
 INSERT INTO filter_config (field_name, field_alias, field_chinese_name, filter_expression, field_type, description) VALUES
-('age', 'ageRange', '年龄区间', 'age BETWEEN_LO 20,30', 'INTEGER', '年龄左开右闭区间查询'),
-('score', 'scoreRange', '分数区间', 'score BETWEEN_RO 80,100', 'DOUBLE', '分数左闭右开区间查询'),
-('salary', 'salaryOpen', '薪资开区间', 'salary BETWEEN_O 6000,12000', 'DOUBLE', '薪资开区间查询'),
+('age', 'ageRange', '年龄区间', 'age > 20 且 <= 30', 'INTEGER', '年龄左开右闭区间查询'),
+('score', 'scoreRange', '分数区间', 'score >= 80 且 < 100', 'DOUBLE', '分数左闭右开区间查询'),
+('salary', 'salaryOpen', '薪资开区间', 'salary > 6000 且 < 12000', 'DOUBLE', '薪资开区间查询'),
 ('hire_date', 'hireYear', '入职年份', 'hire_date >= 2023-01-01', 'DATE', '按入职年份查询'),
 ('phone', 'phoneNull', '手机为空', 'phone NA', 'STRING', '查询手机为空的记录');

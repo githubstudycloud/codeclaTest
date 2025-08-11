@@ -12,10 +12,10 @@ public enum FilterOperator {
     LT("<", "小于"),
     LTE("<=", "小于等于"),
     
-    BETWEEN("BETWEEN", "区间（闭区间）"),
-    BETWEEN_LEFT_OPEN("BETWEEN_LO", "区间（左开右闭）"),
-    BETWEEN_RIGHT_OPEN("BETWEEN_RO", "区间（左闭右开）"),
-    BETWEEN_OPEN("BETWEEN_O", "区间（开区间）"),
+    RANGE_CLOSED(">=<", "闭区间（>= 值1 且 <= 值2）"),
+    RANGE_LEFT_OPEN("><", "左开右闭（> 值1 且 <= 值2）"),
+    RANGE_RIGHT_OPEN(">=<", "左闭右开（>= 值1 且 < 值2）"),
+    RANGE_OPEN("><", "开区间（> 值1 且 < 值2）"),
     
     NA("NA", "空值或空字符串");
     
@@ -34,5 +34,10 @@ public enum FilterOperator {
             }
         }
         throw new IllegalArgumentException("Unsupported operator: " + operator);
+    }
+    
+    public boolean isRangeOperator() {
+        return this == RANGE_CLOSED || this == RANGE_LEFT_OPEN || 
+               this == RANGE_RIGHT_OPEN || this == RANGE_OPEN;
     }
 }

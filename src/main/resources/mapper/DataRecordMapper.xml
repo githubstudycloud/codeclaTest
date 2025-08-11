@@ -101,16 +101,16 @@
                     <if test="ageCondition.operator.name() == 'LTE'">
                         age &lt;= #{ageCondition.value1}
                     </if>
-                    <if test="ageCondition.operator.name() == 'BETWEEN'">
+                    <if test="ageCondition.operator.name() == 'RANGE_CLOSED'">
                         age >= #{ageCondition.value1} AND age &lt;= #{ageCondition.value2}
                     </if>
-                    <if test="ageCondition.operator.name() == 'BETWEEN_LEFT_OPEN'">
+                    <if test="ageCondition.operator.name() == 'RANGE_LEFT_OPEN'">
                         age > #{ageCondition.value1} AND age &lt;= #{ageCondition.value2}
                     </if>
-                    <if test="ageCondition.operator.name() == 'BETWEEN_RIGHT_OPEN'">
+                    <if test="ageCondition.operator.name() == 'RANGE_RIGHT_OPEN'">
                         age >= #{ageCondition.value1} AND age &lt; #{ageCondition.value2}
                     </if>
-                    <if test="ageCondition.operator.name() == 'BETWEEN_OPEN'">
+                    <if test="ageCondition.operator.name() == 'RANGE_OPEN'">
                         age > #{ageCondition.value1} AND age &lt; #{ageCondition.value2}
                     </if>
                     <if test="ageCondition.operator.name() == 'NA'">
@@ -157,16 +157,16 @@
                     <if test="scoreCondition.operator.name() == 'LTE'">
                         score &lt;= #{scoreCondition.value1}
                     </if>
-                    <if test="scoreCondition.operator.name() == 'BETWEEN'">
+                    <if test="scoreCondition.operator.name() == 'RANGE_CLOSED'">
                         score >= #{scoreCondition.value1} AND score &lt;= #{scoreCondition.value2}
                     </if>
-                    <if test="scoreCondition.operator.name() == 'BETWEEN_LEFT_OPEN'">
+                    <if test="scoreCondition.operator.name() == 'RANGE_LEFT_OPEN'">
                         score > #{scoreCondition.value1} AND score &lt;= #{scoreCondition.value2}
                     </if>
-                    <if test="scoreCondition.operator.name() == 'BETWEEN_RIGHT_OPEN'">
+                    <if test="scoreCondition.operator.name() == 'RANGE_RIGHT_OPEN'">
                         score >= #{scoreCondition.value1} AND score &lt; #{scoreCondition.value2}
                     </if>
-                    <if test="scoreCondition.operator.name() == 'BETWEEN_OPEN'">
+                    <if test="scoreCondition.operator.name() == 'RANGE_OPEN'">
                         score > #{scoreCondition.value1} AND score &lt; #{scoreCondition.value2}
                     </if>
                     <if test="scoreCondition.operator.name() == 'NA'">
@@ -213,16 +213,16 @@
                     <if test="salaryCondition.operator.name() == 'LTE'">
                         salary &lt;= #{salaryCondition.value1}
                     </if>
-                    <if test="salaryCondition.operator.name() == 'BETWEEN'">
+                    <if test="salaryCondition.operator.name() == 'RANGE_CLOSED'">
                         salary >= #{salaryCondition.value1} AND salary &lt;= #{salaryCondition.value2}
                     </if>
-                    <if test="salaryCondition.operator.name() == 'BETWEEN_LEFT_OPEN'">
+                    <if test="salaryCondition.operator.name() == 'RANGE_LEFT_OPEN'">
                         salary > #{salaryCondition.value1} AND salary &lt;= #{salaryCondition.value2}
                     </if>
-                    <if test="salaryCondition.operator.name() == 'BETWEEN_RIGHT_OPEN'">
+                    <if test="salaryCondition.operator.name() == 'RANGE_RIGHT_OPEN'">
                         salary >= #{salaryCondition.value1} AND salary &lt; #{salaryCondition.value2}
                     </if>
-                    <if test="salaryCondition.operator.name() == 'BETWEEN_OPEN'">
+                    <if test="salaryCondition.operator.name() == 'RANGE_OPEN'">
                         salary > #{salaryCondition.value1} AND salary &lt; #{salaryCondition.value2}
                     </if>
                     <if test="salaryCondition.operator.name() == 'NA'">
@@ -308,16 +308,16 @@
                     <if test="ageCondition.operator.name() == 'LTE'">
                         age &lt;= #{ageCondition.value1}
                     </if>
-                    <if test="ageCondition.operator.name() == 'BETWEEN'">
+                    <if test="ageCondition.operator.name() == 'RANGE_CLOSED'">
                         age >= #{ageCondition.value1} AND age &lt;= #{ageCondition.value2}
                     </if>
-                    <if test="ageCondition.operator.name() == 'BETWEEN_LEFT_OPEN'">
+                    <if test="ageCondition.operator.name() == 'RANGE_LEFT_OPEN'">
                         age > #{ageCondition.value1} AND age &lt;= #{ageCondition.value2}
                     </if>
-                    <if test="ageCondition.operator.name() == 'BETWEEN_RIGHT_OPEN'">
+                    <if test="ageCondition.operator.name() == 'RANGE_RIGHT_OPEN'">
                         age >= #{ageCondition.value1} AND age &lt; #{ageCondition.value2}
                     </if>
-                    <if test="ageCondition.operator.name() == 'BETWEEN_OPEN'">
+                    <if test="ageCondition.operator.name() == 'RANGE_OPEN'">
                         age > #{ageCondition.value1} AND age &lt; #{ageCondition.value2}
                     </if>
                     <if test="ageCondition.operator.name() == 'NA'">

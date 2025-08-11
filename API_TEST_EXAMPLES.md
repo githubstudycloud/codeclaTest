@@ -222,10 +222,10 @@ Content-Type: application/json
 | >= | 大于等于 | `score >= 60` |
 | < | 小于 | `age < 65` |
 | <= | 小于等于 | `score <= 100` |
-| BETWEEN | 闭区间 | `salary BETWEEN 5000,10000` |
-| BETWEEN_LO | 左开右闭 | `age BETWEEN_LO 18,65` |
-| BETWEEN_RO | 左闭右开 | `score BETWEEN_RO 60,100` |
-| BETWEEN_O | 开区间 | `experience BETWEEN_O 1,5` |
+| >= 且 <= | 闭区间 | `salary >= 5000 且 <= 10000` |
+| > 且 <= | 左开右闭 | `age > 18 且 <= 65` |
+| >= 且 < | 左闭右开 | `score >= 60 且 < 100` |
+| > 且 < | 开区间 | `experience > 1 且 < 5` |
 | NA | 空值 | `phone NA` |
 
 ### 表达式格式规则
@@ -233,8 +233,8 @@ Content-Type: application/json
 1. **单值表达式**：`字段名 操作符 值`
    - 示例：`age > 18`、`name = 张三`
 
-2. **区间表达式**：`字段名 区间操作符 值1,值2`
-   - 示例：`salary BETWEEN 5000,10000`
+2. **区间表达式**：`字段名 操作符1 值1 且 操作符2 值2`
+   - 示例：`salary >= 5000 且 <= 10000`
 
 3. **空值表达式**：`字段名 NA`
    - 示例：`phone NA`

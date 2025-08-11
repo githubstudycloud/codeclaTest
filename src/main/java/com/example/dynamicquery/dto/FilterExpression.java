@@ -22,11 +22,8 @@ public class FilterExpression {
     
     private String errorMessage;
     
-    public boolean isBetweenOperator() {
-        return operator == FilterOperator.BETWEEN ||
-               operator == FilterOperator.BETWEEN_LEFT_OPEN ||
-               operator == FilterOperator.BETWEEN_RIGHT_OPEN ||
-               operator == FilterOperator.BETWEEN_OPEN;
+    public boolean isRangeOperator() {
+        return operator != null && operator.isRangeOperator();
     }
     
     public boolean isNaOperator() {
@@ -34,6 +31,6 @@ public class FilterExpression {
     }
     
     public boolean isSingleValueOperator() {
-        return !isBetweenOperator() && !isNaOperator();
+        return !isRangeOperator() && !isNaOperator();
     }
 }

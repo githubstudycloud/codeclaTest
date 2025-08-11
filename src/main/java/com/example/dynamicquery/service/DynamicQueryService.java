@@ -17,10 +17,10 @@ public class DynamicQueryService {
     private DataRecordMapper dataRecordMapper;
 
     @Autowired
-    private DynamicQueryBuilder queryBuilder;
+    private QueryConditionBuilder queryConditionBuilder;
 
     public List<DataRecord> queryByConditions(Map<String, List<String>> queryParams) {
-        Map<String, Object> buildResult = queryBuilder.buildQueryConditions(queryParams);
+        Map<String, Object> buildResult = queryConditionBuilder.buildQueryConditions(queryParams);
         @SuppressWarnings("unchecked")
         List<QueryCondition> conditions = (List<QueryCondition>) buildResult.get("conditions");
         
@@ -33,7 +33,7 @@ public class DynamicQueryService {
     }
 
     public int countByConditions(Map<String, List<String>> queryParams) {
-        Map<String, Object> buildResult = queryBuilder.buildQueryConditions(queryParams);
+        Map<String, Object> buildResult = queryConditionBuilder.buildQueryConditions(queryParams);
         @SuppressWarnings("unchecked")
         List<QueryCondition> conditions = (List<QueryCondition>) buildResult.get("conditions");
         
