@@ -1,7 +1,7 @@
-package com.example.dynamicquery.controller;
+package com.mycompany.dynamicquery.controller;
 
-import com.example.dynamicquery.entity.FilterConfig;
-import com.example.dynamicquery.service.FilterConfigService;
+import com.mycompany.dynamicquery.entity.FilterConfig;
+import com.mycompany.dynamicquery.service.FilterConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

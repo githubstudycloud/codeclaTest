@@ -1,6 +1,6 @@
-package com.example.dynamicquery.mapper;
+package com.mycompany.dynamicquery.mapper;
 
-import com.example.dynamicquery.entity.FilterConfig;
+import com.mycompany.dynamicquery.entity.FilterConfig;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

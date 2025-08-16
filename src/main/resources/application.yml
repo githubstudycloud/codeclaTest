@@ -22,7 +22,7 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.example.dynamicquery.entity
+  type-aliases-package: com.mycompany.dynamicquery.entity
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
@@ -30,6 +30,6 @@ mybatis:
 
 logging:
   level:
-    com.example.dynamicquery: DEBUG
+    com.mycompany.dynamicquery: DEBUG
     org.springframework.web: DEBUG
     org.mybatis: DEBUG

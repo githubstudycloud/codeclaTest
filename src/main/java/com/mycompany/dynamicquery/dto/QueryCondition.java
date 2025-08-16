@@ -1,6 +1,6 @@
-package com.example.dynamicquery.dto;
+package com.mycompany.dynamicquery.dto;
 
-import com.example.dynamicquery.enums.FilterOperator;
+import com.mycompany.dynamicquery.enums.FilterOperator;
 import lombok.Data;
 
 @Data

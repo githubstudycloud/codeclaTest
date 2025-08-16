@@ -1,7 +1,7 @@
-package com.example.dynamicquery.util;
+package com.mycompany.dynamicquery.util;
 
-import com.example.dynamicquery.dto.FilterExpression;
-import com.example.dynamicquery.enums.FilterOperator;
+import com.mycompany.dynamicquery.dto.FilterExpression;
+import com.mycompany.dynamicquery.enums.FilterOperator;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 

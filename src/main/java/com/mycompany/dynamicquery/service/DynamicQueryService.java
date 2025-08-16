@@ -1,9 +1,9 @@
-package com.example.dynamicquery.service;
+package com.mycompany.dynamicquery.service;
 
-import com.example.dynamicquery.dto.QueryCondition;
-import com.example.dynamicquery.entity.DataRecord;
-import com.example.dynamicquery.mapper.DataRecordMapper;
-import com.example.dynamicquery.util.DynamicQueryBuilder;
+import com.mycompany.dynamicquery.dto.QueryCondition;
+import com.mycompany.dynamicquery.entity.DataRecord;
+import com.mycompany.dynamicquery.mapper.DataRecordMapper;
+import com.mycompany.dynamicquery.util.DynamicQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

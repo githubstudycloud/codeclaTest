@@ -1,4 +1,4 @@
-package com.example.dynamicquery.enums;
+package com.mycompany.dynamicquery.enums;
 
 import lombok.Getter;
 

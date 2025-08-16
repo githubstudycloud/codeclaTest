@@ -1,6 +1,6 @@
-package com.example.dynamicquery.mapper;
+package com.mycompany.dynamicquery.mapper;
 
-import com.example.dynamicquery.entity.DataRecord;
+import com.mycompany.dynamicquery.entity.DataRecord;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

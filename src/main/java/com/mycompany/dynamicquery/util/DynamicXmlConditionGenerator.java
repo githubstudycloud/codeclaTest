@@ -1,6 +1,6 @@
-package com.example.dynamicquery.util;
+package com.mycompany.dynamicquery.util;
 
-import com.example.dynamicquery.enums.FilterOperator;
+import com.mycompany.dynamicquery.enums.FilterOperator;
 import org.springframework.stereotype.Component;
 
 /**

@@ -1,4 +1,4 @@
-package com.example.dynamicquery.util;
+package com.mycompany.dynamicquery.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,9 +1,9 @@
-package com.example.dynamicquery.service;
+package com.mycompany.dynamicquery.service;
 
-import com.example.dynamicquery.dto.FilterExpression;
-import com.example.dynamicquery.entity.FilterConfig;
-import com.example.dynamicquery.mapper.FilterConfigMapper;
-import com.example.dynamicquery.util.FilterExpressionValidator;
+import com.mycompany.dynamicquery.dto.FilterExpression;
+import com.mycompany.dynamicquery.entity.FilterConfig;
+import com.mycompany.dynamicquery.mapper.FilterConfigMapper;
+import com.mycompany.dynamicquery.util.FilterExpressionValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

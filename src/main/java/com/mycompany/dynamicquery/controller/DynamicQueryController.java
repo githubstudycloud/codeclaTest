@@ -1,7 +1,7 @@
-package com.example.dynamicquery.controller;
+package com.mycompany.dynamicquery.controller;
 
-import com.example.dynamicquery.entity.DataRecord;
-import com.example.dynamicquery.service.DynamicQueryService;
+import com.mycompany.dynamicquery.entity.DataRecord;
+import com.mycompany.dynamicquery.service.DynamicQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

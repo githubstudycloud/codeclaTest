@@ -1,8 +1,8 @@
-package com.example.dynamicquery;
+package com.mycompany.dynamicquery;
 
-import com.example.dynamicquery.dto.FilterExpression;
-import com.example.dynamicquery.enums.FilterOperator;
-import com.example.dynamicquery.util.QueryExpressionParser;
+import com.mycompany.dynamicquery.dto.FilterExpression;
+import com.mycompany.dynamicquery.enums.FilterOperator;
+import com.mycompany.dynamicquery.util.QueryExpressionParser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

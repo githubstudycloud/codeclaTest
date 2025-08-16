@@ -1,6 +1,6 @@
-package com.example.dynamicquery.util;
+package com.mycompany.dynamicquery.util;
 
-import com.example.dynamicquery.dto.FilterExpression;
+import com.mycompany.dynamicquery.dto.FilterExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

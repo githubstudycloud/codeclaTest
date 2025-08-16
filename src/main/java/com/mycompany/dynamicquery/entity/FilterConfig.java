@@ -1,48 +1,40 @@
-package com.example.dynamicquery.entity;
+package com.mycompany.dynamicquery.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 @Data
 @Entity
-@Table(name = "data_record")
-public class DataRecord {
+@Table(name = "filter_config")
+public class FilterConfig {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "name", length = 100)
-    private String name;
+    @Column(name = "field_name", nullable = false, length = 100)
+    private String fieldName;
     
-    @Column(name = "age")
-    private Integer age;
+    @Column(name = "field_alias", length = 100)
+    private String fieldAlias;
     
-    @Column(name = "status", length = 50)
-    private String status;
+    @Column(name = "field_chinese_name", length = 100)
+    private String fieldChineseName;
     
-    @Column(name = "score")
-    private Double score;
+    @Column(name = "filter_expression", nullable = false, columnDefinition = "TEXT")
+    private String filterExpression;
     
-    @Column(name = "department", length = 100)
-    private String department;
+    @Column(name = "field_type", length = 50)
+    private String fieldType;
     
-    @Column(name = "email", length = 200)
-    private String email;
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
     
-    @Column(name = "phone", length = 20)
-    private String phone;
-    
-    @Column(name = "salary")
-    private Double salary;
-    
-    @Column(name = "hire_date")
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime hireDate;
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = true;
     
     @Column(name = "created_time", nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
