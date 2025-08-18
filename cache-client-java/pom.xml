@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.cache.middleware</groupId>
+        <artifactId>high-performance-cache-middleware</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>cache-client-java</artifactId>
+    <packaging>pom</packaging>
+    <name>Cache Client Java</name>
+    <description>Java client modules for cache middleware</description>
+
+    <modules>
+        <module>cache-client-core</module>
+        <module>cache-client-annotations</module>
+        <module>cache-client-spring-boot-starter-1x</module>
+        <module>cache-client-spring-boot-starter-2x</module>
+        <module>cache-client-spring-boot-starter-3x</module>
+    </modules>
+</project>

@@ -1,0 +1,160 @@
+version: '3.8'
+
+services:
+  # Cache Server
+  cache-server:
+    build:
+      context: ../../
+      dockerfile: deployment/docker/Dockerfile
+    container_name: cache-server
+    hostname: cache-server
+    ports:
+      - "8080:8080"   # HTTP API
+      - "9090:9090"   # Management/Actuator
+      - "50051:50051" # gRPC
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker,redis,mysql
+      - CACHE_STORAGE_TYPE=redis
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=cache_db
+      - MYSQL_USERNAME=cache_user
+      - MYSQL_PASSWORD=cache_password
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - JAVA_OPTS=-Xms512m -Xmx1g -XX:+UseG1GC
+    volumes:
+      - cache-data:/app/data
+      - cache-logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      - redis
+      - mysql
+      - rabbitmq
+    networks:
+      - cache-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Redis for caching
+  redis:
+    image: redis:7.2-alpine
+    container_name: cache-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - cache-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # MySQL for metadata storage
+  mysql:
+    image: mysql:8.4
+    container_name: cache-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=cache_db
+      - MYSQL_USER=cache_user
+      - MYSQL_PASSWORD=cache_password
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - cache-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # RabbitMQ for message queue
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: cache-rabbitmq
+    ports:
+      - "5672:5672"   # AMQP
+      - "15672:15672" # Management UI
+    environment:
+      - RABBITMQ_DEFAULT_USER=cache_user
+      - RABBITMQ_DEFAULT_PASS=cache_password
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - cache-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Prometheus for monitoring
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    container_name: cache-prometheus
+    ports:
+      - "9091:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - cache-network
+    restart: unless-stopped
+
+  # Grafana for visualization
+  grafana:
+    image: grafana/grafana:10.4.0
+    container_name: cache-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - cache-network
+    restart: unless-stopped
+
+networks:
+  cache-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  cache-data:
+  cache-logs:
+  redis-data:
+  mysql-data:
+  rabbitmq-data:
+  prometheus-data:
+  grafana-data:

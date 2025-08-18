@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.cache.middleware</groupId>
+        <artifactId>cache-client-java</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>cache-client-spring-boot-starter-3x</artifactId>
+    <name>Cache Client Spring Boot Starter 3.x</name>
+    <description>Spring Boot 3.x starter for cache client</description>
+
+    <dependencies>
+        <!-- Core client -->
+        <dependency>
+            <groupId>com.cache.middleware</groupId>
+            <artifactId>cache-client-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+        <!-- Annotations -->
+        <dependency>
+            <groupId>com.cache.middleware</groupId>
+            <artifactId>cache-client-annotations</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+        <!-- Spring Boot 3.x -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        
+        <!-- Testing -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
